@@ -9,6 +9,8 @@ import type { MetaFunction, LinksFunction } from '@remix-run/node';
 
 import '~/styles/tailwind.css';
 
+import NavBar from '~/components/NavBar';
+
 export const meta: MetaFunction = () => [
   {
     title: 'AI Snippet Service',
@@ -38,6 +40,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <NavBar />
+
         {children}
         <ScrollRestoration />
         <Scripts />
