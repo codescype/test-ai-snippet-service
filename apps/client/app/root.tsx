@@ -42,10 +42,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <NavBar />
-
         <HeroSection />
 
-        {children}
+        {/* Main Content */}
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 pb-16">{children}</main>
+
         <ScrollRestoration />
         <Scripts />
       </body>
