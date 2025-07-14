@@ -6,6 +6,7 @@
   "sideEffects": false,
   "dependencies": {
     "@ai-snippet-service/shared": "workspace:*",
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
     "@remix-run/node": "^2.15.0",
     "@remix-run/react": "^2.15.0",
