@@ -15,7 +15,9 @@
     // till you find a solution for typescript not matching by the pattern above
     "src/index.ts",
     "src/server/index.ts",
-    "src/server/server.config.ts"
+    "src/server/server.config.ts",
+    "src/snippets/index.ts",
+    "src/snippets/snippet.model.ts"
   ],
   "exclude": [
     "vite.config.ts",
