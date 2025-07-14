@@ -1,0 +1,41 @@
+{
+  "name": "@ai-snippet-service/shared",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "eslintConfig": "apps/client/eslint.config.mjs"
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "options": {
+        "configFile": "libs/shared/vite.config.ts"
+      }
+    },
+    "dev": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "configFile": "libs/shared/vite.config.ts",
+        "tsConfig": "libs/shared/tsconfig.lib.json",
+        "outputPath": "libs/shared/dist",
+        "watch": true
+      },
+      "continuous": true
+    },
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "configFile": "libs/shared/vite.config.ts",
+        "tsConfig": "libs/shared/tsconfig.lib.json",
+        "outputPath": "libs/shared/dist"
+      }
+    }
+  },
+  "tags": ["scope:full-stack"]
+}

@@ -1,0 +1,69 @@
+{
+  "name": "@ai-snippet-service/client",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/client/src",
+  "projectType": "application",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "eslintConfig": "apps/client/eslint.config.mjs"
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "options": {
+        "tsConfig": "apps/client/tsconfig.spec.json",
+        "viteConfig": "apps/client/vitest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/client",
+        "command": "remix vite:dev --port=3030"
+      },
+      "continuous": true,
+      "dependsOn": [
+        {
+          "target": "dev",
+          "projects": [
+            "@ai-snippet-service/shared",
+            "@ai-snippet-service/server"
+          ]
+        }
+      ]
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/client",
+        "command": "remix vite:build"
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "@ai-snippet-service/shared"
+        }
+      ]
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/client",
+        "command": "cross-env PORT=3030 remix-serve ./dist/server/index.js"
+      },
+      "continuous": true,
+      "dependsOn": [
+        "^build",
+        {
+          "target": "start",
+          "projects": ["@ai-snippet-service/server"]
+        }
+      ]
+    }
+  },
+  "implicitDependencies": ["@ai-snippet-service/shared"],
+  "tags": ["scope:client"]
+}
