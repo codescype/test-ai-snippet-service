@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Link, useLocation } from '@remix-run/react';
 import {
   PlusCircle,
   List,
@@ -18,9 +18,54 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '~/components/ui/sheet';
+import { cn } from '~/utils/shadcn/utils';
+
+interface NavLinkProps {
+  to: string;
+  children: React.ReactNode;
+  end?: boolean; // For exact path matching 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any; // Allow other props like className, style, etc
+}
+export function NavLink({ to, children, end = false, ...props }: NavLinkProps) {
+  const location = useLocation();
+
+  // Determine if the link is active
+  const isActive = end
+    ? location.pathname === to
+    : location.pathname === to || location.pathname.startsWith(`${to}/`);
+
+  return (
+    <Link to={to} {...props}>
+      <Button
+        variant={isActive ? 'secondary' : 'ghost'}
+        className={cn(
+          'justify-start h-12',
+          isActive ? 'bg-blue-600 hover:bg-blue-700 text-white' : ''
+        )}
+      >
+        {children}
+      </Button>
+    </Link>
+  );
+}
+
+export function NavLinks() {
+  return (
+    <>
+      <NavLink to="/" end>
+        <PlusCircle className="w-4 h-4 mr-2" />
+        Create
+      </NavLink>
+      <NavLink to="/snippets">
+        <List className="w-4 h-4 mr-2" />
+        View Snippets
+      </NavLink>
+    </>
+  );
+}
 
 export default function NavBar() {
-  const [activeTab, setActiveTab] = useState<'create' | 'view'>('create');
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -55,26 +100,8 @@ export default function NavBar() {
                 <Moon className="w-4 h-4" />
               )}
             </Button>
-            <Button
-              variant={activeTab === 'create' ? 'default' : 'ghost'}
-              onClick={() => setActiveTab('create')}
-              className={
-                activeTab === 'create' ? 'bg-blue-600 hover:bg-blue-700' : ''
-              }
-            >
-              <PlusCircle className="w-4 h-4 mr-2" />
-              Create
-            </Button>
-            <Button
-              variant={activeTab === 'view' ? 'default' : 'ghost'}
-              onClick={() => setActiveTab('view')}
-              className={
-                activeTab === 'view' ? 'bg-blue-600 hover:bg-blue-700' : ''
-              }
-            >
-              <List className="w-4 h-4 mr-2" />
-              View Snippets
-            </Button>
+
+            <NavLinks />
           </div>
 
           {/* Mobile Navigation Items */}
@@ -103,30 +130,7 @@ export default function NavBar() {
                   <SheetTitle className="text-left">Navigation</SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col space-y-3 mt-6">
-                  <Button
-                    variant={activeTab === 'create' ? 'default' : 'ghost'}
-                    onClick={() => setActiveTab('create')}
-                    className={`justify-start h-12 ${
-                      activeTab === 'create'
-                        ? 'bg-blue-600 hover:bg-blue-700'
-                        : ''
-                    }`}
-                  >
-                    <PlusCircle className="w-4 h-4 mr-3" />
-                    Create Snippet
-                  </Button>
-                  <Button
-                    variant={activeTab === 'view' ? 'default' : 'ghost'}
-                    onClick={() => setActiveTab('view')}
-                    className={`justify-start h-12 ${
-                      activeTab === 'view'
-                        ? 'bg-blue-600 hover:bg-blue-700'
-                        : ''
-                    }`}
-                  >
-                    <List className="w-4 h-4 mr-3" />
-                    View Snippets
-                  </Button>
+                  <NavLinks />
                 </div>
               </SheetContent>
             </Sheet>
