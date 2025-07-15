@@ -4,6 +4,7 @@ import { cors } from '@elysiajs/cors';
 import { swagger } from '@elysiajs/swagger';
 
 import { serverAppHostName } from '@ai-snippet-service/shared';
+import { snippetsRoutes } from './resources/snippets/snippets.routes';
 
 // Setup the Elysia server
 export const app = new Elysia({
@@ -27,6 +28,8 @@ export const app = new Elysia({
       message: code,
     };
   })
+
+  .use(snippetsRoutes)
 
   // Define a simple route for the root path
   .get('/', () => 'Welcome to the AI Snippet Service Server!');
