@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import { config } from 'dotenv';
 
 import { app } from './app';
 import { serverAppPort, serverAppBaseURL } from '@ai-snippet-service/shared';
@@ -14,3 +14,14 @@ app.listen(serverAppPort, () => {
     `📖 API documentation is available at ${serverAppBaseURL}/swagger`
   );
 });
+
+// Connect to the database
+prisma
+  .$connect()
+  .then(() => {
+    console.log('Prisma is connected to the database');
+  })
+  .catch((error) => {
+    console.error('Database connection error:', error);
+    process.exit(1);
+  });
