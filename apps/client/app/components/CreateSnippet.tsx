@@ -41,7 +41,7 @@ export default function CreateSnippet({ actionData }: CreateSnippetProps) {
   useEffect(() => {
     if (
       (navigation.state === 'idle' && actionData?.status === 'error') ||
-      actionData?.status === 'success'
+      (navigation.state === 'idle' && actionData?.status === 'success')
     ) {
       toast({
         title: actionData.status,
