@@ -172,6 +172,61 @@ export default function CreateSnippet({ actionData }: CreateSnippetProps) {
               )}
             </Button>
           </Form>
+
+          {actionData && actionData.status === 'error' && (
+            <Alert className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950">
+              <div className="flex items-start space-x-2">
+                <CheckCircle className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
+
+                <div className="flex-1">
+                  <AlertDescription className="text-red-800 dark:text-red-200">
+                    {actionData.message}
+                  </AlertDescription>
+                </div>
+              </div>
+            </Alert>
+          )}
+
+          {actionData && actionData.status === 'success' && (
+            <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950">
+              <div className="flex items-start space-x-2">
+                <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" />
+
+                <div className="flex-1">
+                  <AlertDescription className="text-green-800 dark:text-green-200">
+                    {actionData.snippet?.text}
+                  </AlertDescription>
+                </div>
+              </div>
+            </Alert>
+          )}
+
+          {actionData &&
+            actionData.status === 'success' &&
+            actionData.snippet?.summary && (
+              <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+                <CardContent className="pt-6">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-foreground mb-2 block">
+                        Generated Summary
+                      </label>
+                      <p className="text-foreground bg-background/70 dark:bg-background/50 p-4 rounded-lg border border-border">
+                        {actionData.snippet?.summary}
+                      </p>
+                    </div>
+                    <Button
+                      onClick={handleCopySummary}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      <Copy className="w-4 h-4 mr-2" />
+                      Copy Summary to Clipboard
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
         </CardContent>
       </Card>
     </div>
