@@ -2,10 +2,10 @@ import { serverAppBaseURL } from '@ai-snippet-service/shared';
 console.log(`🚨 Server should be running at ${serverAppBaseURL}`);
 
 // Set up the API call function to make API calls to the server
-export async function callAPIServer<T>(
+export async function callAPIServer(
   endpointPath: string,
   options?: RequestInit
-): Promise<T | null> {
+): Promise<unknown> {
   try {
     const res = await fetch(`${serverAppBaseURL}${endpointPath}`, options);
 
