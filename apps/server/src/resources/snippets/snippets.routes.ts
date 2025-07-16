@@ -5,10 +5,25 @@ export const snippetsRoutes = new Elysia()
   // Add an instance of Snippets Controller to the snippets route
   .decorate('snippetsController', new SnippetsController())
 
-export const snippetsRoutes = new Elysia().group('/snippets', (app) => {
-  return app.post('/', 'Welcome to Create Snippet Route', {
-    body: t.Object({
-      text: t.String(),
-    }),
+  .group('/snippets', (app) => {
+    return app.post(
+      '/',
+      async ({ body, status, snippetsController }) => {
+        try {
+          const snippets = await snippetsController.createSnippet(body.text);
+
+          // Return the snippets as JSON
+          return { ...snippets };
+        } catch (error) {
+          console.error(error);
+
+          throw status(500);
+        }
+      },
+      {
+        body: t.Object({
+          text: t.String({ minLength: 1 }),
+        }),
+      }
+    );
   });
-});
