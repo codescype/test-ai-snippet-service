@@ -13,7 +13,7 @@
     "test": {
       "executor": "@nx/vite:test",
       "options": {
-        "configFile": "libs/shared/vite.config.ts"
+        "configFile": "apps/server/vite.config.ts"
       }
     },
     "dev": {
