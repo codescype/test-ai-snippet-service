@@ -11,6 +11,7 @@ import '~/styles/tailwind.css';
 
 import NavBar from '~/components/NavBar';
 import HeroSection from './components/HeroSection';
+import { ThemeProvider } from './hooks/use-theme';
 
 export const meta: MetaFunction = () => [
   {
@@ -41,12 +42,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <NavBar />
-        <HeroSection />
+        <ThemeProvider
+          defaultTheme="system"
+          storageKey="ai-snippet-service-ui-theme"
+        >
+          <NavBar />
+          <HeroSection />
 
-        {/* Main Content */}
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 pb-16">{children}</main>
-
+          {/* Main Content */}
+          <main className="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+            {children}
+          </main>
+        </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
