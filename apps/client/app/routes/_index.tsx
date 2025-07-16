@@ -33,7 +33,7 @@ export async function action({ request }: ActionFunctionArgs): Promise<Result> {
     const snippet = await callAPIServer<Snippet>('/snippets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: text }),
+      body: JSON.stringify({ text: text }),
     });
 
     return {
