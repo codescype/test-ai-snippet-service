@@ -2,6 +2,9 @@ import 'dotenv/config';
 
 import { app } from './app';
 import { serverAppPort, serverAppBaseURL } from '@ai-snippet-service/shared';
+import { prisma } from './prisma/prisma';
+
+config({ path: '../../../.env' });
 
 // Start the server by listening on the specified host and port
 app.listen(serverAppPort, () => {
