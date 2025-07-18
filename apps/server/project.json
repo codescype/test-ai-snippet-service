@@ -51,7 +51,6 @@
         "cwd": "apps/server",
         "command": "node dist/main.js --port=3000"
       },
-      "dependsOn": ["^build"],
       "continuous": true
     },
     "prisma-generate": {

@@ -54,14 +54,7 @@
         "cwd": "apps/client",
         "command": "cross-env PORT=3030 remix-serve ./dist/server/index.js"
       },
-      "continuous": true,
-      "dependsOn": [
-        "^build",
-        {
-          "target": "start",
-          "projects": ["@ai-snippet-service/server"]
-        }
-      ]
+      "continuous": true
     }
   },
   "tags": ["scope:client"]
