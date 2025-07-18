@@ -42,6 +42,10 @@
         {
           "target": "build",
           "projects": ["@ai-snippet-service/shared"]
+        },
+        {
+          "target": "prisma-generate",
+          "projects": "self"
         }
       ]
     },
