@@ -21,6 +21,15 @@ vi.mock('../../prisma/prisma', () => ({
 }));
 
 describe('Snippets Routes', () => {
+  // Create a mock snippet
+  const mockText =
+    'Test text with over fifty words to ensure it meets the requirement for length, covering various topics like technology and innovation in a meaningful way for testing purposes.';
+  const mockSummary = 'Mock summary';
+  const mockSnippet = {
+    id: 'mock-id',
+    text: mockText,
+    summary: mockSummary,
+  };
   describe('POST /snippets - Create a Snippet', () => {
     it('returns a 422 validation error status when text is not provided', async () => {
       // @ts-expect-error so we can test the error.
@@ -30,15 +39,6 @@ describe('Snippets Routes', () => {
     });
 
     it('creates a snippet with summarized text', async () => {
-      const mockText =
-        'Test text with over fifty words to ensure it meets the requirement for length, covering various topics like technology and innovation in a meaningful way for testing purposes.';
-      const mockSummary = 'Mock summary';
-      const mockSnippet = {
-        id: 'mock-id',
-        text: mockText,
-        summary: mockSummary,
-      };
-
       vi.mocked(aiService.generateSummary).mockResolvedValue(mockSummary);
       vi.mocked(prisma.snippet.create).mockResolvedValue(mockSnippet);
 
