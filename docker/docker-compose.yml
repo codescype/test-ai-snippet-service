@@ -29,6 +29,6 @@ services:
     volumes:
       - ..:/app
     command: >
-      sh -c "pnpm nx run client:start --projects=client"
+      sh -c "pnpm nx run client:start"
     deploy:
       replicas: 1
