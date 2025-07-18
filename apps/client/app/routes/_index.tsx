@@ -8,7 +8,7 @@ import { isWordsCountMoreThan } from '~/utils/wordCount';
 
 interface Result {
   status: 'success' | 'error';
-  message: string;
+  message: string | null;
   snippet: Snippet | null;
 }
 
