@@ -11,10 +11,10 @@ export const snippetsRoutes = new Elysia()
         '/',
         async ({ body, status, snippetsController }) => {
           try {
-            const snippets = await snippetsController.createSnippet(body.text);
+            const snippet = await snippetsController.createSnippet(body.text);
 
-            // Return the snippets as JSON
-            return { ...snippets };
+            // Return the snippet as JSON
+            return { ...snippet };
           } catch (error) {
             console.error(error);
 
