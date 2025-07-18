@@ -15,6 +15,12 @@ export class SnippetsController {
       
       return snippet;
   }
+
+  async getSnippets(): Promise<Snippet[]> {
+    const snippets = await prisma.snippet.findMany();
+
+    return snippets;
+  }
 }
 
 
