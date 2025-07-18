@@ -1,0 +1,49 @@
+# compiled output
+dist
+tmp
+out-tsc
+
+# dependencies
+node_modules
+
+# IDEs and editors
+.vscode/
+.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# misc
+npm-debug.log
+yarn-error.log
+/typings
+.git.
+.gitignore
+*.md
+*.log
+*.bak
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Nx-specific
+.nx/cache
+.nx/workspace-data
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
+
+# Vite/Vitest
+vite.config.*.timestamp
+vitest.config.*.timestamp
+test-output
+
+# Environment
+.env*
+!.env.example
+
+# Docker exception
+!/docker/*
