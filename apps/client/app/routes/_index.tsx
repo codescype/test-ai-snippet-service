@@ -56,5 +56,5 @@ export async function action({ request }: ActionFunctionArgs): Promise<Result> {
 export default function Index() {
   const actionData = useActionData<Result>();
 
-  return <CreateSnippet actionData={actionData} />;
+  return <CreateSnippet result={actionData} />;
 }
