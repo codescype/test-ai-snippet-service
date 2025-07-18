@@ -8,7 +8,7 @@ import { isWordsCountMoreThan } from '~/utils/wordCount';
 
 interface Result {
   status: 'success' | 'error';
-  message: string;
+  message: string | null;
   snippet: Snippet | null;
 }
 
@@ -30,11 +30,11 @@ export async function action({ request }: ActionFunctionArgs): Promise<Result> {
   }
 
   try {
-    const snippet = await callAPIServer<Snippet>('/snippets', {
+    const snippet = await callAPIServer('/snippets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: text }),
-    });
+    }) as Snippet;
 
     return {
       status: 'success',
@@ -54,7 +54,7 @@ export async function action({ request }: ActionFunctionArgs): Promise<Result> {
 }
 
 export default function Index() {
-  const actionData = useActionData<Result>();
+  const result = useActionData<Result>();
 
-  return <CreateSnippet actionData={actionData} />;
+  return <CreateSnippet result={result} />;
 }

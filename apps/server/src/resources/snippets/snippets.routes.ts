@@ -6,24 +6,37 @@ export const snippetsRoutes = new Elysia()
   .decorate('snippetsController', new SnippetsController())
 
   .group('/snippets', (app) => {
-    return app.post(
-      '/',
-      async ({ body, status, snippetsController }) => {
+    return app
+      .post(
+        '/',
+        async ({ body, status, snippetsController }) => {
+          try {
+            const snippet = await snippetsController.createSnippet(body.text);
+
+            // Return the snippet as JSON
+            return { ...snippet };
+          } catch (error) {
+            console.error(error);
+
+            throw status(500);
+          }
+        },
+        {
+          body: t.Object({
+            text: t.String({ minLength: 1 }),
+          }),
+        }
+      )
+      .get('/', async ({ status, snippetsController }) => {
         try {
-          const snippets = await snippetsController.createSnippet(body.text);
+          const snippets = await snippetsController.getSnippets();
 
           // Return the snippets as JSON
-          return { ...snippets };
+          return [...snippets];
         } catch (error) {
           console.error(error);
 
           throw status(500);
         }
-      },
-      {
-        body: t.Object({
-          text: t.String({ minLength: 1 }),
-        }),
-      }
-    );
+      });
   });

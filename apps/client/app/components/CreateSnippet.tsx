@@ -18,11 +18,11 @@ interface Result {
   snippet: Snippet | null;
 }
 
-// Accept actionData as a prop
+// Accept result as a prop
 interface CreateSnippetProps {
-  actionData?: Result;
+  result?: Result;
 }
-export default function CreateSnippet({ actionData }: CreateSnippetProps) {
+export default function CreateSnippet({ result }: CreateSnippetProps) {
   const navigation = useNavigation();
   const isProcessing = navigation.state === 'submitting';
 
@@ -32,24 +32,24 @@ export default function CreateSnippet({ actionData }: CreateSnippetProps) {
 
   // Reset localInputText after a successful submission
   useEffect(() => {
-    if (navigation.state === 'idle' && actionData?.status === 'success') {
+    if (navigation.state === 'idle' && result?.status === 'success') {
       setInputText('');
     }
-  }, [navigation.state, actionData]);
+  }, [navigation.state, result]);
 
-  // Show Error Toast if actionData has an error
+  // Show Error Toast if result has an error
   useEffect(() => {
     if (
-      (navigation.state === 'idle' && actionData?.status === 'error') ||
-      (navigation.state === 'idle' && actionData?.status === 'success')
+      (navigation.state === 'idle' && result?.status === 'error') ||
+      (navigation.state === 'idle' && result?.status === 'success')
     ) {
       toast({
-        title: actionData.status,
-        description: actionData.message,
-        variant: actionData.status === 'success' ? 'default' : 'destructive',
+        title: result.status,
+        description: result.message,
+        variant: result.status === 'success' ? 'default' : 'destructive',
       });
     }
-  }, [navigation.state, actionData, toast]);
+  }, [navigation.state, result, toast]);
 
   const wordCount = countWords(inputText);
 
@@ -77,9 +77,9 @@ export default function CreateSnippet({ actionData }: CreateSnippetProps) {
   };
 
   const handleCopySummary = async () => {
-    if (actionData?.snippet?.summary) {
+    if (result?.snippet?.summary) {
       try {
-        await navigator.clipboard.writeText(actionData.snippet.summary);
+        await navigator.clipboard.writeText(result.snippet.summary);
         toast({
           title: 'Copied to clipboard',
           description: 'Summary has been copied successfully',
@@ -173,37 +173,37 @@ export default function CreateSnippet({ actionData }: CreateSnippetProps) {
             </Button>
           </Form>
 
-          {actionData && actionData.status === 'error' && (
+          {result && result.status === 'error' && (
             <Alert className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950">
               <div className="flex items-start space-x-2">
                 <CheckCircle className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
 
                 <div className="flex-1">
                   <AlertDescription className="text-red-800 dark:text-red-200">
-                    {actionData.message}
+                    {result.message}
                   </AlertDescription>
                 </div>
               </div>
             </Alert>
           )}
 
-          {actionData && actionData.status === 'success' && (
+          {result && result.status === 'success' && (
             <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950">
               <div className="flex items-start space-x-2">
                 <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" />
 
                 <div className="flex-1">
                   <AlertDescription className="text-green-800 dark:text-green-200">
-                    {actionData.snippet?.text}
+                    {result.snippet?.text}
                   </AlertDescription>
                 </div>
               </div>
             </Alert>
           )}
 
-          {actionData &&
-            actionData.status === 'success' &&
-            actionData.snippet?.summary && (
+          {result &&
+            result.status === 'success' &&
+            result.snippet?.summary && (
               <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
                 <CardContent className="pt-6">
                   <div className="space-y-4">
@@ -212,7 +212,7 @@ export default function CreateSnippet({ actionData }: CreateSnippetProps) {
                         Generated Summary
                       </label>
                       <p className="text-foreground bg-background/70 dark:bg-background/50 p-4 rounded-lg border border-border">
-                        {actionData.snippet?.summary}
+                        {result.snippet?.summary}
                       </p>
                     </div>
                     <Button
