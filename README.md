@@ -103,7 +103,13 @@ pnpm nx run server:test
 
 #### 03. Run the apps in Development
 
-##### 01. Run all the apps at once
+##### 01. Generate the Prisma Schema
+
+```sh
+pnpm nx run server:prisma-generate
+```
+
+##### 02. Run all the apps at once
 
 ```sh
 pnpm nx run-many --target=dev --projects=server,client
