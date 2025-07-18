@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from '@remix-run/react'; // Already here, good!
+import { useNavigate } from '@remix-run/react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Badge } from '~/components/ui/badge';
-import { Copy, Search, Eye, Calendar, FileText } from 'lucide-react';
+import { Copy, Search, Eye, FileText } from 'lucide-react';
 import { useToast } from '~/hooks/use-toast';
 import { Snippet } from '@ai-snippet-service/shared/snippets/snippet.model';
 
