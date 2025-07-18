@@ -132,6 +132,12 @@ pnpm nx run-many --target=start --projects=server,client
 
 #### 02. Or Use docker
 
+##### 01. Copy .env
+
+Copy `.env` to `docker/.env`
+
+##### 02. Build and Run docker
+
 - It runs the tests (which is technically the server app for now).
 - Builds the apps
 - And, starts the apps
