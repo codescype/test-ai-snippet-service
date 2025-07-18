@@ -48,4 +48,15 @@ describe('Snippets Routes', () => {
       expect(response.data).toEqual(mockSnippet);
     });
   });
+
+  describe('GET /snippets - Get all Snippets', () => {
+    it('returns all snippets', async () => {
+      vi.mocked(prisma.snippet.findMany).mockResolvedValue([mockSnippet]);
+
+      const response = await request.snippets.get();
+
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual([mockSnippet]);
+    });
+  });
 });
