@@ -4,7 +4,8 @@
 
 This software solution is a test software I built based on the objective that: "Content teams often need a quick way to paste in raw text (blog drafts, transcripts, etc.) and get back short, AI-generated summaries they can reuse elsewhere."
 
-![AI Snippet Service Client App](./images/client-app.png)
+![AI Snippet Service Client App](./docs/images/client-app.jpg)
+![AI Snippet Service Server App](./docs/images/server-app.jpg)
 
 ## 02. Background Story
 
