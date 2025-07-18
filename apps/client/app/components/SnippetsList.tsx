@@ -42,7 +42,7 @@ const SnippetsList = ({ result }: SnippetsListProps) => {
   }, [searchTerm, snippets]);
 
   const handleViewDetails = (snippetId: string) => {
-    navigate(`/snippet/${snippetId}`);
+    navigate(`/snippets/${snippetId}`);
   };
 
   const handleCopySummary = async (summary: string) => {

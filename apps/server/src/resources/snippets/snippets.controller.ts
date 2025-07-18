@@ -21,6 +21,19 @@ export class SnippetsController {
 
     return snippets;
   }
+
+  async findSnippet(id: string): Promise<Snippet | null> {
+    try {
+      const snippet = await prisma.snippet.findUnique({ where: { id } })
+
+      return snippet;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+    
+  }
 }
 
 
