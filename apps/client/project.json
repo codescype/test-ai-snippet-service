@@ -64,6 +64,5 @@
       ]
     }
   },
-  "implicitDependencies": ["@ai-snippet-service/shared"],
   "tags": ["scope:client"]
 }
