@@ -32,7 +32,7 @@ export const snippetsRoutes = new Elysia()
           const snippets = await snippetsController.getSnippets();
 
           // Return the snippets as JSON
-          return { ...snippets };
+          return [...snippets];
         } catch (error) {
           console.error(error);
 
