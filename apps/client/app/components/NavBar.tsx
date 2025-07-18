@@ -53,11 +53,11 @@ export function NavLink({ to, children, end = false, ...props }: NavLinkProps) {
 export function NavLinks() {
   return (
     <>
-      <NavLink to="/" end>
+      <NavLink to="/" end key="home-page">
         <PlusCircle className="w-4 h-4 mr-2" />
         Create
       </NavLink>
-      <NavLink to="/snippets">
+      <NavLink to="/snippets" end key="snippets-page">
         <List className="w-4 h-4 mr-2" />
         View Snippets
       </NavLink>
