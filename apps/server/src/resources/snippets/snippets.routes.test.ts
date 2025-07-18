@@ -30,6 +30,7 @@ describe('Snippets Routes', () => {
     text: mockText,
     summary: mockSummary,
   };
+
   describe('POST /snippets - Create a Snippet', () => {
     it('returns a 422 validation error status when text is not provided', async () => {
       // @ts-expect-error so we can test the error.
@@ -57,6 +58,23 @@ describe('Snippets Routes', () => {
 
       expect(response.status).toBe(200);
       expect(response.data).toEqual([mockSnippet]);
+    });
+  });
+
+  describe('GET /snippets/:id - Find a Snippet', () => {
+    it('returns a 500 not error status when wrong id is provided', async () => {
+      vi.mocked(prisma.snippet.findUnique).mockRejectedValue(new Error());
+      const { status } = await request.snippets({ id: 'incorrect-id' }).get();
+      
+      expect(status).toBe(500);
+    });
+    
+    it('returns the found snippet', async () => {
+      vi.mocked(prisma.snippet.findUnique).mockResolvedValue(mockSnippet);
+      const response = await request.snippets({ id: mockSnippet.id }).get();
+
+      expect(response.status).toBe(200);
+      expect(response.data).toEqual(mockSnippet);
     });
   });
 });
