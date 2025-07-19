@@ -9,6 +9,11 @@ import type { MetaFunction, LinksFunction } from '@remix-run/node';
 
 import '~/styles/tailwind.css';
 
+import NavBar from '~/components/NavBar';
+import HeroSection from '~/components/HeroSection';
+import { ThemeProvider } from '~/hooks/use-theme';
+import { TooltipProvider } from '~/components/ui/tooltip';
+
 export const meta: MetaFunction = () => [
   {
     title: 'AI Snippet Service',
@@ -38,7 +43,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <ThemeProvider
+          defaultTheme="system"
+          storageKey="ai-snippet-service-ui-theme"
+        >
+          <TooltipProvider>
+            <NavBar />
+            <HeroSection />
+
+            {/* Main Content */}
+            <main className="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+              {children}
+            </main>
+          </TooltipProvider>
+        </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

@@ -1,90 +1,161 @@
-# AiSnippetService
+# AI Snippet Service
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## 01. Introduction
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+This software solution is a test software I built based on the objective that: "Content teams often need a quick way to paste in raw text (blog drafts, transcripts, etc.) and get back short, AI-generated summaries they can reuse elsewhere."
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+![AI Snippet Service Client App](./docs/images/client-app.jpg)
+![AI Snippet Service Server App](./docs/images/server-app.jpg)
 
-## Finish your remote caching setup
+## 02. Background Story
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/uisffBzsPS)
+Though, initially, the main task was to build a back-end for such a service, I decided to challenge myself build an end-to-end full-stack software solution product around the back-end.
 
+Therefore, my process was to
 
-## Generate a library
+1. Start with a plan like a Technical Product Manager to plan the project at a product level.
+
+2. Execute the plan as a Product Designer & a Software Engineer. Which involves to:
+
+   1. Design the solution like a software architect. Which includes adopting a BDD + TDD methodology, a Remix + Elysia stack (both written in TypeScript). And, FYI🤓, I crafted the stack based on a balance between:
+
+      - Product performance
+      - Product Cost
+      - My proficiency
+      - My time efficiency
+
+   2. Plan the Implementation `around the user stories.
+
+   3. Design the UI, and Develop the software.
+
+   4. Deploy it to the market.
+
+## 03. Reflection Story
+
+So, to summarize how that went: as much as I thought I would knock this off in a little time, like 6 hours, especially because I decided to use a modular monolith architecture, which involves me using Nx, deciding to use Remix, which I just found preferable for some sort of application that the Next.js I was more proficient in, and deciding to use Prisma instead of Mongoose for the DRM, since I believe an ORM or DRM should be something that works with more range of databases, since that one of the main reasons of using it, so with all these, which created more gaps, I spent more time than initially thought, but, I enjoyed the whole process all the way.
+
+To be more specific, since I couldn't do it all in a go, worked at many short bursts, rather than long sprints, with the summary of my tracked time with ClickUp which I sort of used to manage myself for the project, I spent
+
+- About `~17 hours` to plan and study to bridge my knowledge gaps.
+- Less than `<1 hour` to design the UI
+- About `~8 hours` to develop the frontend (remember, it's my first time using Remix 😉)
+- About `~3+ hours` (though less than 4 hours) to develop the core of the main business logic on the backend
+- And, `~4+ hours` for chores and other things.
+
+Wow; that's about `~34+ hours` 😲😊. That's about a 40 hours work week challenge 🤭👏🏾.
+
+And, one decision I changed was to use Elysia/Eden instead of Supertest since it offers the features we need from Supertest, and it's adds other features to Elysia.
+
+And, definitely, just like most projects, there were more things I would like to incorporate:
+
+- Optimize the docker builds further
+  - Move running test on the production docker to either a CI pipeline or docker build so it doesn't require me to copy the source files and keep the node_modules
+  - Use a custom server for Remix so it doesn't also require the node_modules in the container
+  - Try to further reduce the image size with tools like slim
+- Add a CI pipeline
+- Do more code optimizations
+- Etc.
+
+But, being agile, the goal is to build in meaningful iterations rather than a giant waterfall.
+
+## 04. How to Setup the application
+
+### 01. Prerequisites
+
+- Node.js (>= 22.17.0)
+- pnpm (>= 10.x)
+- MongoDB (Atlas) Database
+- OpenAI API key
+
+### 02. Set up the repository
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/codescype/test-ai-snippet-service.git
+   cd test-ai-snippet-service
+   ```
+
+2. Install dependencies:
+
+   ```sh
+   pnpm install
+   ```
+
+3. Set up environment variables
+
+Create an `.env` file in the root directory and fill in the variables in the `.env.example` file.
+
+## 05. How to Run the Application
+
+### 01. Run the app locally
+
+#### 01. (Optionally) Seed the Database
+
+#### 02. Test the Applications
 
 ```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+pnpm nx run server:test
 ```
 
-## Run tasks
+> [!note]
+> I wrote tests for the server app alone, since that's the focus.
 
-To build the library use:
+#### 03. Run the apps in Development
+
+##### 01. Generate the Prisma Schema
 
 ```sh
-npx nx build pkg1
+pnpm nx run server:prisma-generate
 ```
 
-To run any task with Nx use:
+##### 02. Run all the apps at once
 
 ```sh
-npx nx <target> <project-name>
+pnpm nx run-many --target=dev --projects=server,client
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+- Access the server app on http://localhost:3000
+- Access the client app on http://localhost:3030
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+> [!tip]
+> If you run the client alone with `pnpm nx run client:dev`,
+> it will automatically start the server
+> since my configuration tells nx the client relies on the server 😉.
 
-## Versioning and releasing
+#### 04. Run the apps in production
 
-To version and release the library use
-
-```
-npx nx release
-```
-
-Pass `--dry-run` to see what would happen without actually releasing the library.
-
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
+##### 01. Build the Applications & library
 
 ```sh
-npx nx sync
+pnpm nx run-many --target=build --all
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+##### 02. Start the applications
 
 ```sh
-npx nx sync:check
+pnpm nx run-many --target=start --projects=server,client
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+#### 02. Or Use docker
 
+##### 01. Copy .env
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Copy `.env` to `docker/.env`
 
-## Install Nx Console
+##### 02. Build and Run docker
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+- It runs the tests (which is technically the server app for now).
+- Builds the apps
+- And, starts the apps
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```sh
+docker-compose -f docker/docker-compose.yml up --build
+```
 
-## Useful links
+> [!note]
+> I configured the Docker to run separate containers using a shared Dockerfile. So, each container can scale as need be.
+> And, the container runs a test before starting the server app. Which would exit the container if the test fails.
 
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Access the server app on http://localhost:3000
+- Access the client app on http://localhost:3030

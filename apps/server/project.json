@@ -13,7 +13,7 @@
     "test": {
       "executor": "@nx/vite:test",
       "options": {
-        "configFile": "libs/shared/vite.config.ts"
+        "configFile": "apps/server/vite.config.ts"
       }
     },
     "dev": {
@@ -42,6 +42,10 @@
         {
           "target": "build",
           "projects": ["@ai-snippet-service/shared"]
+        },
+        {
+          "target": "prisma-generate",
+          "projects": "self"
         }
       ]
     },
@@ -51,10 +55,22 @@
         "cwd": "apps/server",
         "command": "node dist/main.js --port=3000"
       },
-      "dependsOn": ["^build"],
       "continuous": true
+    },
+    "prisma-generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma generate --schema=src/prisma/schema.prisma",
+        "cwd": "apps/server"
+      }
+    },
+    "prisma-seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsx src/prisma/seeds/seed.ts",
+        "cwd": "apps/server"
+      }
     }
   },
-  "implicitDependencies": ["@ai-snippet-service/shared"],
   "tags": ["scope:backend"]
 }
