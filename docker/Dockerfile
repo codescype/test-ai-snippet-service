@@ -31,6 +31,7 @@ COPY --from=builder /app/apps/server/dist apps/server/dist
 COPY --from=builder /app/libs/shared/dist libs/shared/dist
 COPY --from=builder /app/apps/client/app apps/client/app
 COPY --from=builder /app/apps/server/src apps/server/src
+COPY --from=builder /app/apps/server/generated apps/server/generated
 COPY --from=builder /app/libs/shared/src libs/shared/src
 COPY --from=builder /app/vitest.workspace.ts /app/tsconfig.json /app/tsconfig.base.json ./
 COPY --from=builder /app/apps/client/vite.config.ts /app/apps/client/tsconfig.json /app/apps/client/tsconfig.app.json /app/apps/client/tsconfig.spec.json apps/client/
