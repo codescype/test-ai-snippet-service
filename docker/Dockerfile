@@ -25,6 +25,8 @@ COPY --from=builder /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.ya
 COPY --from=builder /app/apps/client/package.json /app/apps/client/project.json apps/client/
 COPY --from=builder /app/apps/server/package.json /app/apps/server/project.json apps/server/
 COPY --from=builder /app/libs/shared/package.json /app/libs/shared/project.json libs/shared/
+RUN pnpm install --frozen-lockfile
+
 COPY --from=builder /app/nx.json ./
 COPY --from=builder /app/apps/client/dist apps/client/dist
 COPY --from=builder /app/apps/server/dist apps/server/dist
@@ -37,7 +39,6 @@ COPY --from=builder /app/vitest.workspace.ts /app/tsconfig.json /app/tsconfig.ba
 COPY --from=builder /app/apps/client/vite.config.ts /app/apps/client/tsconfig.json /app/apps/client/tsconfig.app.json /app/apps/client/tsconfig.spec.json apps/client/
 COPY --from=builder /app/apps/server/vite.config.ts /app/apps/server/tsconfig.json /app/apps/server/tsconfig.app.json /app/apps/server/tsconfig.spec.json apps/server/
 COPY --from=builder /app/libs/shared/vite.config.ts /app/libs/shared/tsconfig.json /app/libs/shared/tsconfig.lib.json /app/libs/shared/tsconfig.spec.json libs/shared/
-RUN pnpm install --frozen-lockfile
 
 EXPOSE 3000 3030
 
