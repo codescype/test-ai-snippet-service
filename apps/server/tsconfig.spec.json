@@ -18,8 +18,7 @@
     "vite.config.mts",
     "vitest.config.ts",
     "vitest.config.mts",
-    "specs/**/*.test.{ts,tsx,js,jsx}",
-    "specs/**/*.spec.{ts,tsx,js,jsx}"
+    "specs/**/*.{spec,test}.{ts,tsx,js,jsx}"
   ],
   "paths": {
     "@ai-snippet-service/shared": ["../../libs/shared/src/index.ts"],
