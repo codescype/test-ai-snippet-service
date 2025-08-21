@@ -27,7 +27,7 @@ export const snippetsRoutes = new Elysia()
         .get(
           '/:id',
           async ({ params, status, snippetsController }) => {
-            const snippet = await snippetsController.findSnippet(params.id);
+            const snippet = await snippetsController.getSnippetById(params.id);
 
             if (!snippet) {
               // throw instead of returning a status 404
