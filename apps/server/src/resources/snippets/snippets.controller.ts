@@ -1,5 +1,5 @@
+import { aiService } from './../../services/ai-service';
 import { Snippet } from '@ai-snippet-service/shared';
-import { aiService } from '../../services/ai.service';
 import { prisma } from '../../prisma/prisma';
 
 /**
