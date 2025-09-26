@@ -34,18 +34,6 @@ Therefore, my process was to
 
 So, to summarize how that went: as much as I thought I would knock this off in a little time, like 6 hours, especially because I decided to use a modular monolith architecture, which involves me using Nx, deciding to use Remix, which I just found preferable for some sort of application that the Next.js I was more proficient in, and deciding to use Prisma instead of Mongoose for the DRM, since I believe an ORM or DRM should be something that works with more range of databases, since that one of the main reasons of using it, so with all these, which created more gaps, I spent more time than initially thought, but, I enjoyed the whole process all the way.
 
-To be more specific, since I couldn't do it all in a go, worked at many short bursts, rather than long sprints, with the summary of my tracked time with ClickUp which I sort of used to manage myself for the project, I spent
-
-- About `~17 hours` to plan and study to bridge my knowledge gaps.
-- Less than `<1 hour` to design the UI
-- About `~8 hours` to develop the frontend (remember, it's my first time using Remix 😉)
-- About `~3+ hours` (though less than 4 hours) to develop the core of the main business logic on the backend
-- And, `~4+ hours` for chores and other things.
-
-Wow; that's about `~34+ hours` 😲😊. That's about a 40 hours work week challenge 🤭👏🏾.
-
-And, one decision I changed was to use Elysia/Eden instead of Supertest since it offers the features we need from Supertest, and it's adds other features to Elysia.
-
 And, definitely, just like most projects, there were more things I would like to incorporate:
 
 - Optimize the docker builds further

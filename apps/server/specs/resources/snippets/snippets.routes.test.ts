@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { treaty } from '@elysiajs/eden';
 
-import { app } from '../../app';
-import { aiService } from '../../services/ai.service';
-import { prisma } from '../../prisma/prisma';
+import { app } from '../../../src/app';
+import { aiService } from '../../../src/services/ai.service';
+import { prisma } from '../../../src/prisma/prisma';
 
 // Set up Elysia treaty for tests
 const request = treaty(app);
@@ -65,10 +65,10 @@ describe('Snippets Routes', () => {
     it('returns a 500 not error status when wrong id is provided', async () => {
       vi.mocked(prisma.snippet.findUnique).mockRejectedValue(new Error());
       const { status } = await request.snippets({ id: 'incorrect-id' }).get();
-      
+
       expect(status).toBe(500);
     });
-    
+
     it('returns the found snippet', async () => {
       vi.mocked(prisma.snippet.findUnique).mockResolvedValue(mockSnippet);
       const response = await request.snippets({ id: mockSnippet.id }).get();

@@ -12,11 +12,11 @@ services:
       - NODE_ENV=production
     volumes:
       - ..:/app
-    command: >
-      sh -c "pnpm nx run server:test &&
-             pnpm nx run server:start"
     deploy:
       replicas: 1
+    entrypoint: >
+      sh -c "pnpm nx run server:test &&
+             pnpm nx run server:start"
 
   client:
     build:
@@ -28,7 +28,7 @@ services:
       - NODE_ENV=production
     volumes:
       - ..:/app
-    command: >
-      sh -c "pnpm nx run client:start"
     deploy:
       replicas: 1
+    entrypoint: >
+      sh -c "pnpm nx run client:start"

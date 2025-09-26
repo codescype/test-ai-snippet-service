@@ -6,70 +6,40 @@ export const snippetsRoutes = new Elysia()
   .decorate('snippetsController', new SnippetsController())
 
   .group('/snippets', (app) => {
-    return app
-      .post(
-        '/',
-        async ({ body, status, snippetsController }) => {
-          try {
-            const snippet = await snippetsController.createSnippet(body.text);
-
-            // Return the snippet as JSON
-            return { ...snippet };
-          } catch (error) {
-            console.error(error);
-
-            throw status(500);
+    return (
+      app
+        // create a snippet
+        .post(
+          '/',
+          ({ body, snippetsController }) =>
+            snippetsController.createSnippet(body.text),
+          {
+            body: t.Object({
+              text: t.String({ minLength: 1 }),
+            }),
           }
-        },
-        {
-          body: t.Object({
-            text: t.String({ minLength: 1 }),
-          }),
-        }
-      )
-      .get('/', async ({ status, snippetsController }) => {
-        try {
-          const snippets = await snippetsController.getSnippets();
+        )
 
-          // Return the snippets as JSON
-          return [...snippets];
-        } catch (error) {
-          console.error(error);
+        // Get all snippets
+        .get('/', ({ snippetsController }) => snippetsController.getSnippets())
 
-          throw status(500);
-        }
-      })
-      .get(
-        '/:id',
-        async ({ params, status, snippetsController }) => {
-          try {
-            const snippet = await snippetsController.findSnippet(params.id);
+        // Get a snippet by ID
+        .get(
+          '/:id',
+          async ({ params, status, snippetsController }) => {
+            const snippet = await snippetsController.getSnippetById(params.id);
 
             if (!snippet) {
+              // throw instead of returning a status 404
+              // to satisfy Elysia's requirement for non success responses
               throw status(404);
             }
-
-            // Return the snippet as JSON
-            return { ...snippet };
-          } catch (error) {
-            console.error(error);
-
-            if (
-              typeof error === 'object' &&
-              error !== null &&
-              'code' in error &&
-              typeof error.code === 'number'
-            ) {
-              throw status(error.code);
-            } else {
-              throw status(500);
-            }
+          },
+          {
+            params: t.Object({
+              id: t.String({ minLength: 1 }),
+            }),
           }
-        },
-        {
-          params: t.Object({
-            id: t.String({ minLength: 1 }),
-          }),
-        }
-      );
+        )
+    );
   });
