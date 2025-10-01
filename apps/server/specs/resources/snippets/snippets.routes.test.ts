@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { treaty } from '@elysiajs/eden';
 
 import { app } from '../../../src/app';
-import { aiService } from '../../../src/services/ai.service';
+import { aiService } from '../../../src/services/ai-service';
 import { prisma } from '../../../src/prisma/prisma';
 
 // Set up Elysia treaty for tests
