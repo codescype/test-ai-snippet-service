@@ -20,13 +20,10 @@ export const app = new Elysia({
   .use(swagger())
 
   // Add an error handler to catch errors on the route
-  .onError(({ status, code, error }) => {
+  .onError(({ error }) => {
     console.error('Error:', error);
 
-    return {
-      status,
-      message: code,
-    };
+    return error;
   })
 
   .use(snippetsRoutes)
