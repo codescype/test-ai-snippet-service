@@ -62,11 +62,11 @@ describe('Snippets Routes', () => {
   });
 
   describe('GET /snippets/:id - Find a Snippet', () => {
-    it('returns a 500 not error status when wrong id is provided', async () => {
-      vi.mocked(prisma.snippet.findUnique).mockRejectedValue(new Error());
+    it('returns a 404 not error status when wrong id is provided', async () => {
+      vi.mocked(prisma.snippet.findUnique).mockResolvedValue(null);
       const { status } = await request.snippets({ id: 'incorrect-id' }).get();
 
-      expect(status).toBe(500);
+      expect(status).toBe(404);
     });
 
     it('returns the found snippet', async () => {
