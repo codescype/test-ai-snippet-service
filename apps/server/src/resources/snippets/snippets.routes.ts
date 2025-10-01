@@ -34,6 +34,8 @@ export const snippetsRoutes = new Elysia()
               // to satisfy Elysia's requirement for non success responses
               throw status(404);
             }
+
+            return snippet;
           },
           {
             params: t.Object({
