@@ -9,8 +9,8 @@ import { prisma } from '../../../src/prisma/prisma';
 const request = treaty(app);
 
 // Set up mocks
-vi.mock('../../services/ai.service');
-vi.mock('../../prisma/prisma', () => ({
+vi.mock('../../../src/services/ai-service');
+vi.mock('../../../src/prisma/prisma', () => ({
   prisma: {
     snippet: {
       create: vi.fn(),
