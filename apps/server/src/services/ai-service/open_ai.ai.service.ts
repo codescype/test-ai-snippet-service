@@ -5,10 +5,18 @@ import { AIService } from './ai.service.interface';
  * OpenAI Implementation of AIService.
  */
 export class OpenAIService implements AIService {
+  private ai: OpenAI;
   /**
    * @param ai - An instance of the OpenAI client
    */
-  constructor(private ai = new OpenAI({ apiKey: process.env.AI_API_KEY })) {}
+  constructor() {
+    try {
+      this.ai = new OpenAI({ apiKey: process.env.AI_API_KEY });
+    } catch (error) {
+      console.error('Error initializing OpenAI client:', error);
+      throw new Error('Failed to initialize OpenAI client');
+    }
+  }
 
   /**
    * Generates a summary for the given text using OpenAI.
