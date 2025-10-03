@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
 import { treaty } from '@elysiajs/eden';
 
-import { app } from '../../../src/app';
+import { app, type App } from '../../../src/app';
 import { aiService } from '../../../src/services/ai-service';
 import { prisma } from '../../../src/prisma/prisma';
 
-// Set up Elysia treaty for tests
-const request = treaty(app);
+// Set up Elysia treaty for tests with proper typing
+const request = treaty<App>(app);
 
 // Set up mocks
 vi.mock('../../../src/services/ai-service');
