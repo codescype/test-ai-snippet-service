@@ -30,3 +30,6 @@ export const app = new Elysia({
 
   // Define a simple route for the root path
   .get('/', () => 'Welcome to the AI Snippet Service Server!');
+
+// Export the type for TypeScript inference
+export type App = typeof app;
