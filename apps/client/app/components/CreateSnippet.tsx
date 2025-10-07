@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Form, useNavigation } from '@remix-run/react';
+import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { Clipboard, Trash2, Loader2, CheckCircle, Copy } from 'lucide-react';
 
 import { useToast } from '~/hooks/use-toast';
@@ -18,11 +18,8 @@ interface Result {
   snippet: Snippet | null;
 }
 
-// Accept result as a prop
-interface CreateSnippetProps {
-  result?: Result;
-}
-export default function CreateSnippet({ result }: CreateSnippetProps) {
+export default function CreateSnippet() {
+  const result = useActionData<Result>();
   const navigation = useNavigation();
   const isProcessing = navigation.state === 'submitting';
 

@@ -2,14 +2,10 @@ import { Snippet } from '@ai-snippet-service/shared/snippets/snippet.model';
 import { callAPIServer } from '~/utils/apiServer';
 
 import SnippetsList from '~/components/SnippetsList';
+import { SnippetsResult } from '~/utils/snippetsResult';
 
-export interface GetSnippetsResult {
-  status: 'success' | 'error';
-  message: string | null;
-  snippets: Snippet[] | null;
-}
 
-export async function loader(): Promise<GetSnippetsResult> {
+export async function loader(): Promise<SnippetsResult> {
   try {
     const snippets = (await callAPIServer('/snippets', {
       method: 'GET',
