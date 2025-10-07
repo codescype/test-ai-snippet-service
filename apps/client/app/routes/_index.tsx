@@ -26,10 +26,13 @@ export async function action({
   }
 
   try {
-    const snippet = (await callAPIServer('/snippets', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: text }),
+    const snippet = (await callAPIServer({
+      path: '/snippets',
+      options: {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text }),
+      },
     })) as Snippet;
 
     return {

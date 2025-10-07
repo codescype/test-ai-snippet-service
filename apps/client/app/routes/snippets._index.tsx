@@ -4,12 +4,14 @@ import { callAPIServer } from '~/utils/apiServer';
 import SnippetsList from '~/components/SnippetsList';
 import { SnippetsResult } from '~/utils/snippetsResult';
 
-
 export async function loader(): Promise<SnippetsResult> {
   try {
-    const snippets = (await callAPIServer('/snippets', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+    const snippets = (await callAPIServer({
+      path: '/snippets',
+      options: {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      },
     })) as Snippet[];
 
     return {
