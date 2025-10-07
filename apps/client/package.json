@@ -2,7 +2,12 @@
   "name": "@ai-snippet-service/client",
   "private": true,
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "dev": "nx run @ai-snippet-service/client:dev",
+    "test": "nx run @ai-snippet-service/client:test",
+    "build": "nx run @ai-snippet-service/client:build",
+    "start": "nx run @ai-snippet-service/client:start"
+  },
   "sideEffects": false,
   "dependencies": {
     "@ai-snippet-service/shared": "workspace:*",

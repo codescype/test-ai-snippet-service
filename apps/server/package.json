@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "scripts": {
+    "dev": "nx run @ai-snippet-service/server:dev",
+    "test": "nx run @ai-snippet-service/server:test",
+    "build": "nx run @ai-snippet-service/server:build",
+    "start": "nx run @ai-snippet-service/server:start"
+  },
   "dependencies": {
     "@ai-snippet-service/shared": "workspace:*",
     "@elysiajs/cors": "^1.4.0",

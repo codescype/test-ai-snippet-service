@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "scripts": {
+    "dev": "nx run @ai-snippet-service/shared:dev",
+    "test": "nx run @ai-snippet-service/shared:test",
+    "build": "nx run @ai-snippet-service/shared:build"
+  },
   "files": [
     "dist"
   ],
