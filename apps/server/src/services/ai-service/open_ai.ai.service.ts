@@ -32,10 +32,17 @@ export class OpenAIService implements AIService {
         messages: [{ role: 'user', content: prompt }],
         max_completion_tokens: 50,
       });
-      return response.choices[0].message.content.trim();
+
+      const summary = response.choices[0].message.content?.trim() ?? '';
+
+      if (summary.length === 0) {
+        throw new Error('Model returned an empty summary.');
+      }
+
+      return summary;
     } catch (error) {
       console.error('OpenAI error:', error);
-      throw new Error('Failed to generate summary');
+      throw new Error('Failed to generate summary,');
     }
   }
 }
