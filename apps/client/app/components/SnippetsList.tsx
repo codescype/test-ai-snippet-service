@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from '@remix-run/react';
+import { useNavigate, useLoaderData } from '@remix-run/react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Button } from '~/components/ui/button';
@@ -7,19 +7,13 @@ import { Input } from '~/components/ui/input';
 import { Badge } from '~/components/ui/badge';
 import { Copy, Search, Eye, FileText } from 'lucide-react';
 import { useToast } from '~/hooks/use-toast';
+import { GetSnippetsResult } from '~/routes/snippets._index';
+
 import { Snippet } from '@ai-snippet-service/shared/snippets/snippet.model';
 
-interface Result {
-  status: 'success' | 'error';
-  message: string | null;
-  snippets: Snippet[] | null;
-}
 
-interface SnippetsListProps {
-  result: Result;
-}
-
-const SnippetsList = ({ result }: SnippetsListProps) => {
+const SnippetsList = () => {
+  const result = useLoaderData<GetSnippetsResult>();
   const [snippets] = useState<Snippet[]>(result.snippets ?? []);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredSnippets, setFilteredSnippets] = useState<Snippet[]>([]);

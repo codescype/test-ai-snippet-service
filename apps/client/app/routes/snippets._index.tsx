@@ -1,17 +1,15 @@
-import { useLoaderData } from '@remix-run/react';
-
 import { Snippet } from '@ai-snippet-service/shared/snippets/snippet.model';
 import { callAPIServer } from '~/utils/apiServer';
 
 import SnippetsList from '~/components/SnippetsList';
 
-interface Result {
+export interface GetSnippetsResult {
   status: 'success' | 'error';
   message: string | null;
   snippets: Snippet[] | null;
 }
 
-export async function loader(): Promise<Result> {
+export async function loader(): Promise<GetSnippetsResult> {
   try {
     const snippets = (await callAPIServer('/snippets', {
       method: 'GET',
@@ -36,7 +34,5 @@ export async function loader(): Promise<Result> {
 }
 
 export default function List() {
-  const result = useLoaderData<Result>();
-
-  return <SnippetsList result={result} />;
+  return <SnippetsList />;
 }
