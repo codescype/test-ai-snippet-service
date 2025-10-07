@@ -36,11 +36,15 @@ export const snippetsRoutes = new Elysia()
         )
 
         // Get all snippets
-        .get('/', ({ snippetsController }) => snippetsController.getSnippets(), {
-          response: {
-            200: t.Array(SnippetSchema),
-          },
-        })
+        .get(
+          '/',
+          ({ snippetsController }) => snippetsController.getSnippets(),
+          {
+            response: {
+              200: t.Array(SnippetSchema),
+            },
+          }
+        )
 
         // Get a snippet by ID
         .get(
@@ -51,7 +55,10 @@ export const snippetsRoutes = new Elysia()
             if (!snippet) {
               // throw instead of returning a status 404
               // to satisfy Elysia's requirement for non success responses
-              throw status(404);
+              throw status(404, {
+                error: 'Snippet not found',
+                status: 404,
+              });
             }
 
             return snippet;
