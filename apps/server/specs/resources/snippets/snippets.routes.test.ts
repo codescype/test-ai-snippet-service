@@ -1,16 +1,16 @@
 import { describe, it, expect, vi } from 'vitest';
 import { treaty } from '@elysiajs/eden';
 
-import { app } from '../../../src/app';
-import { aiService } from '../../../src/services/ai.service';
+import { app, type App } from '../../../src/app';
+import { aiService } from '../../../src/services/ai-service';
 import { prisma } from '../../../src/prisma/prisma';
 
-// Set up Elysia treaty for tests
-const request = treaty(app);
+// Set up Elysia treaty for tests with proper typing
+const request = treaty<App>(app);
 
 // Set up mocks
-vi.mock('../../services/ai.service');
-vi.mock('../../prisma/prisma', () => ({
+vi.mock('../../../src/services/ai-service');
+vi.mock('../../../src/prisma/prisma', () => ({
   prisma: {
     snippet: {
       create: vi.fn(),
@@ -62,11 +62,11 @@ describe('Snippets Routes', () => {
   });
 
   describe('GET /snippets/:id - Find a Snippet', () => {
-    it('returns a 500 not error status when wrong id is provided', async () => {
-      vi.mocked(prisma.snippet.findUnique).mockRejectedValue(new Error());
+    it('returns a 404 not error status when wrong id is provided', async () => {
+      vi.mocked(prisma.snippet.findUnique).mockResolvedValue(null);
       const { status } = await request.snippets({ id: 'incorrect-id' }).get();
 
-      expect(status).toBe(500);
+      expect(status).toBe(404);
     });
 
     it('returns the found snippet', async () => {

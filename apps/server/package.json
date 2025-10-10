@@ -3,15 +3,21 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "scripts": {
+    "dev": "nx run @ai-snippet-service/server:dev",
+    "test": "nx run @ai-snippet-service/server:test",
+    "build": "nx run @ai-snippet-service/server:build",
+    "start": "nx run @ai-snippet-service/server:start"
+  },
   "dependencies": {
     "@ai-snippet-service/shared": "workspace:*",
-    "@elysiajs/cors": "^1.3.3",
-    "@elysiajs/eden": "^1.3.2",
-    "@elysiajs/node": "^1.3.0",
+    "@elysiajs/cors": "^1.4.0",
+    "@elysiajs/eden": "^1.4.1",
+    "@elysiajs/node": "^1.4.1",
     "@elysiajs/swagger": "^1.3.1",
-    "@prisma/client": "^6.11.1",
-    "elysia": "^1.3.5",
-    "openai": "^5.9.0",
-    "prisma": "^6.11.1"
+    "@prisma/client": "^6.16.3",
+    "elysia": "^1.4.9",
+    "openai": "^5.23.2",
+    "prisma": "^6.16.3"
   }
 }

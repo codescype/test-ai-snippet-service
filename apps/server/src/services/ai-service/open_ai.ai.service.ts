@@ -5,10 +5,18 @@ import { AIService } from './ai.service.interface';
  * OpenAI Implementation of AIService.
  */
 export class OpenAIService implements AIService {
+  private ai: OpenAI;
   /**
    * @param ai - An instance of the OpenAI client
    */
-  constructor(private ai = new OpenAI({ apiKey: process.env.AI_API_KEY })) {}
+  constructor() {
+    try {
+      this.ai = new OpenAI({ apiKey: process.env.AI_API_KEY });
+    } catch (error) {
+      console.error('Error initializing OpenAI client:', error);
+      throw new Error('Failed to initialize OpenAI client');
+    }
+  }
 
   /**
    * Generates a summary for the given text using OpenAI.
@@ -24,10 +32,17 @@ export class OpenAIService implements AIService {
         messages: [{ role: 'user', content: prompt }],
         max_completion_tokens: 50,
       });
-      return response.choices[0].message.content.trim();
+
+      const summary = response.choices[0].message.content?.trim() ?? '';
+
+      if (summary.length === 0) {
+        throw new Error('Model returned an empty summary.');
+      }
+
+      return summary;
     } catch (error) {
       console.error('OpenAI error:', error);
-      throw new Error('Failed to generate summary');
+      throw new Error('Failed to generate summary,');
     }
   }
 }

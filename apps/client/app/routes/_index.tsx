@@ -1,18 +1,14 @@
 import { Snippet } from '@ai-snippet-service/shared';
 import type { ActionFunctionArgs } from '@remix-run/node';
-import { useActionData } from '@remix-run/react';
 
 import CreateSnippet from '~/components/CreateSnippet';
 import { callAPIServer } from '~/utils/apiServer';
+import { SnippetResult } from '~/utils/snippetsResult';
 import { isWordsCountMoreThan } from '~/utils/wordCount';
 
-interface Result {
-  status: 'success' | 'error';
-  message: string | null;
-  snippet: Snippet | null;
-}
-
-export async function action({ request }: ActionFunctionArgs): Promise<Result> {
+export async function action({
+  request,
+}: ActionFunctionArgs): Promise<SnippetResult> {
   const formData = await request.formData();
   const text = formData.get('text') as string;
 
@@ -30,11 +26,14 @@ export async function action({ request }: ActionFunctionArgs): Promise<Result> {
   }
 
   try {
-    const snippet = await callAPIServer('/snippets', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: text }),
-    }) as Snippet;
+    const snippet = (await callAPIServer({
+      path: '/snippets',
+      options: {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text }),
+      },
+    })) as Snippet;
 
     return {
       status: 'success',
@@ -54,7 +53,5 @@ export async function action({ request }: ActionFunctionArgs): Promise<Result> {
 }
 
 export default function Index() {
-  const result = useActionData<Result>();
-
-  return <CreateSnippet result={result} />;
+  return <CreateSnippet />;
 }

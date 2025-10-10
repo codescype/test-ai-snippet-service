@@ -12,16 +12,22 @@ export class SnippetsController {
    * @returns The created Snippet object.
    */
   async createSnippet(text: string): Promise<Snippet> {
+    // Generate a summary for the snippet
+    console.log(`Generating summary for snippet...`);
     const summary = await aiService.generateSummary(text);
+    console.log(`Generated summary ${summary} for ${text}`);
 
+    // Save the snippet to the database
+    console.log(`Saving snippet to the database...`);
     const snippet = await prisma.snippet.create({
       data: {
         text,
         summary,
       },
     });
-      
-      return snippet;
+    console.log(`Saved snippet ${snippet.id} to the database`);
+
+    return snippet;
   }
 
   /**
@@ -29,7 +35,10 @@ export class SnippetsController {
    * @returns An array of Snippet objects.
    */
   async getSnippets(): Promise<Snippet[]> {
+    // Retrieve all snippets from the database
+    console.log(`Retrieving snippets from the database...`);
     const snippets = await prisma.snippet.findMany();
+    console.log(`Retrieved ${snippets.length} snippets from the database`);
 
     return snippets;
   }
@@ -41,7 +50,10 @@ export class SnippetsController {
    */
   async getSnippetById(id: string): Promise<Snippet | null> {
     try {
+      // Retrieve a single snippet by its ID
+      console.log(`Retrieving snippet ${id} from the database...`);
       const snippet = await prisma.snippet.findUnique({ where: { id } });
+      console.log(`Retrieved snippet ${id} from the database`);
 
       return snippet;
     } catch (error) {
@@ -49,8 +61,5 @@ export class SnippetsController {
 
       return null;
     }
-    
   }
 }
-
-

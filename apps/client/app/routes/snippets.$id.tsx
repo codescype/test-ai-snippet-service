@@ -12,11 +12,14 @@ interface Result {
   snippet: Snippet | null;
 }
 
-export async function loader({params}: LoaderFunctionArgs): Promise<Result> {
+export async function loader({ params }: LoaderFunctionArgs): Promise<Result> {
   try {
-    const snippet = (await callAPIServer(`/snippets/${params.id}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+    const snippet = (await callAPIServer({
+      path: `/snippets/${params.id}`,
+      options: {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      },
     })) as Snippet;
 
     return {

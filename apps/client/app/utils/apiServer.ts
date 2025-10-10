@@ -1,18 +1,20 @@
 import { serverAppBaseURL } from '@ai-snippet-service/shared';
 console.log(`🚨 Server should be running at ${serverAppBaseURL}`);
 
+interface CallAPIServerParams {
+  path: string;
+  options?: RequestInit;
+}
+
 // Set up the API call function to make API calls to the server
-export async function callAPIServer(
-  endpointPath: string,
-  options?: RequestInit
-): Promise<unknown> {
+export async function callAPIServer({path, options}: CallAPIServerParams): Promise<unknown> {
   try {
-    const res = await fetch(`${serverAppBaseURL}${endpointPath}`, options);
+    const res = await fetch(`${serverAppBaseURL}${path}`, options);
 
     // Check if the response is not ok
     if (!res.ok) {
       throw new Error(
-        `Failed to fetch from ${endpointPath}: ${res.statusText}`
+        `Failed to fetch from ${path}: ${res.statusText}`
       );
     }
 
