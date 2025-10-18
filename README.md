@@ -7,6 +7,8 @@ This software solution is a test software I built based on the objective that: "
 ![AI Snippet Service Client App](./docs/images/client-app.jpg)
 ![AI Snippet Service Server App](./docs/images/server-app.jpg)
 
+---
+
 ## 02. The Stories
 
 ### 01. Background Story
@@ -47,6 +49,8 @@ And, definitely, just like most projects, there were more things I would like to
 - Etc.
 
 But, being agile, the goal is to build in meaningful iterations rather than a giant waterfall.
+
+---
 
 ## 03. How to Setup the application
 
