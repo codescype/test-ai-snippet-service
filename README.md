@@ -7,7 +7,11 @@ This software solution is a test software I built based on the objective that: "
 ![AI Snippet Service Client App](./docs/images/client-app.jpg)
 ![AI Snippet Service Server App](./docs/images/server-app.jpg)
 
-## 02. Background Story
+---
+
+## 02. The Stories
+
+### 01. Background Story
 
 Though, initially, the main task was to build a back-end for such a service, I decided to challenge myself build an end-to-end full-stack software solution product around the back-end.
 
@@ -30,7 +34,7 @@ Therefore, my process was to
 
    4. Deploy it to the market.
 
-## 03. Reflection Story
+### 02. Reflection Story
 
 So, to summarize how that went: as much as I thought I would knock this off in a little time, like 6 hours, especially because I decided to use a modular monolith architecture, which involves me using Nx, deciding to use Remix, which I just found preferable for some sort of application that the Next.js I was more proficient in, and deciding to use Prisma instead of Mongoose for the DRM, since I believe an ORM or DRM should be something that works with more range of databases, since that one of the main reasons of using it, so with all these, which created more gaps, I spent more time than initially thought, but, I enjoyed the whole process all the way.
 
@@ -46,7 +50,9 @@ And, definitely, just like most projects, there were more things I would like to
 
 But, being agile, the goal is to build in meaningful iterations rather than a giant waterfall.
 
-## 04. How to Setup the application
+---
+
+## 03. How to Setup the application
 
 ### 01. Prerequisites
 
