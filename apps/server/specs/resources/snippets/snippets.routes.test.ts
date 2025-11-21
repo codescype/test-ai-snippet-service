@@ -1,15 +1,47 @@
-import { describe, it, expect, vi } from 'vitest';
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  type Mock,
+} from 'vitest';
 import { treaty } from '@elysiajs/eden';
 
 import { app, type App } from '../../../src/app';
 import { aiService } from '../../../src/services/ai-service';
 import { prisma } from '../../../src/prisma/prisma';
+import { Snippet } from '@ai-snippet-service/shared';
 
-// Set up Elysia treaty for tests with proper typing
-const request = treaty<App>(app);
+// #region Test Setup
+// Create a test context type
+type TestContext = {
+  api: ReturnType<typeof treaty>;
+  mockSnippet: Snippet;
+  mockSnippets: Snippet[];
+};
 
-// Set up mocks
+// Mock Prisma Client type
+type PrismaClient = unknown;
+
+// Setup test context and mocks
+let testContext: TestContext;
+
+// Create a test data
+const MOCK_SNIPPET_ID = 'test-id-123';
+const MOCK_SNIPPET_TEXT =
+  'This is a test snippet with more than 50 characters to ensure proper validation and processing';
+const MOCK_SUMMARY = 'AI generated summary for test snippet';
+const MOCK_SNIPPET = {
+  id: MOCK_SNIPPET_ID,
+  text: MOCK_SNIPPET_TEXT,
+  summary: MOCK_SUMMARY,
+};
+
+// Mock the AI Service
 vi.mock('../../../src/services/ai-service');
+
+// Mock the Prisma Client
 vi.mock('../../../src/prisma/prisma', () => ({
   prisma: {
     snippet: {
@@ -17,64 +49,131 @@ vi.mock('../../../src/prisma/prisma', () => ({
       findMany: vi.fn(),
       findUnique: vi.fn(),
     },
-  },
+  } as unknown as PrismaClient,
 }));
 
-describe('Snippets Routes', () => {
-  // Create a mock snippet
-  const mockText =
-    'Test text with over fifty words to ensure it meets the requirement for length, covering various topics like technology and innovation in a meaningful way for testing purposes.';
-  const mockSummary = 'Mock summary';
-  const mockSnippet = {
-    id: 'mock-id',
-    text: mockText,
-    summary: mockSummary,
+// Setup hooks to run before each test
+beforeEach(() => {
+  // Reset all mocks
+  vi.clearAllMocks();
+
+  // Create a fresh test context
+  testContext = {
+    api: treaty<App>(app),
+    mockSnippet: { ...MOCK_SNIPPET },
+    mockSnippets: [{ ...MOCK_SNIPPET }],
   };
 
-  describe('POST /snippets - Create a Snippet', () => {
-    it('returns a 422 validation error status when text is not provided', async () => {
-      // @ts-expect-error so we can test the error.
-      const { status } = await request.snippets.post();
+  // Setup default mock implementations
+  (prisma.snippet.findUnique as Mock).mockImplementation(({ where }) =>
+    where.id === MOCK_SNIPPET_ID
+      ? Promise.resolve(testContext.mockSnippet)
+      : Promise.resolve(null)
+  );
 
-      expect(status).toBe(422);
+  (prisma.snippet.findMany as Mock).mockResolvedValue(testContext.mockSnippets);
+  (prisma.snippet.create as Mock).mockResolvedValue(testContext.mockSnippet);
+  (aiService.generateSummary as Mock).mockResolvedValue(MOCK_SUMMARY);
+});
+// #endregion
+
+// #region Test Suite
+// Define the test suite
+describe('Given the Snippets route group is requested', () => {
+  describe('when it is a POST request to /snippets', () => {
+    it('it should return a 422 error when the request body text is empty', async () => {
+      const response = await testContext.api.snippets
+        .post({ text: '' })
+        .catch((e: never) => e);
+
+      expect(response.status).toBe(422);
     });
 
-    it('creates a snippet with summarized text', async () => {
-      vi.mocked(aiService.generateSummary).mockResolvedValue(mockSummary);
-      vi.mocked(prisma.snippet.create).mockResolvedValue(mockSnippet);
+    it('it should return a new snippet when the request body has a valid text', async () => {
+      // Setup mocks
+      (aiService.generateSummary as Mock).mockResolvedValue(MOCK_SUMMARY);
+      (prisma.snippet.create as Mock).mockResolvedValue(MOCK_SNIPPET);
 
-      const response = await request.snippets.post({ text: mockText });
+      // Execute
+      const response = await testContext.api.snippets.post({
+        text: MOCK_SNIPPET_TEXT,
+      });
 
+      // Assert
       expect(response.status).toBe(200);
-      expect(response.data).toEqual(mockSnippet);
+      expect(response.data).toEqual({
+        id: MOCK_SNIPPET_ID,
+        text: MOCK_SNIPPET_TEXT.trim(),
+        summary: MOCK_SUMMARY,
+      });
+
+      // Verify AI service was called with the correct text
+      expect(aiService.generateSummary).toHaveBeenCalledWith(
+        MOCK_SNIPPET_TEXT.trim()
+      );
+
+      // Verify database was called with correct data
+      expect(prisma.snippet.create).toHaveBeenCalledWith({
+        data: {
+          text: MOCK_SNIPPET_TEXT.trim(),
+          summary: MOCK_SUMMARY,
+        },
+      });
     });
   });
 
-  describe('GET /snippets - Get all Snippets', () => {
-    it('returns all snippets', async () => {
-      vi.mocked(prisma.snippet.findMany).mockResolvedValue([mockSnippet]);
+  describe('when it is a GET request to /snippets', () => {
+    it('it should return an array of all snippets', async () => {
+      // Setup
+      (prisma.snippet.findMany as Mock).mockResolvedValue(
+        testContext.mockSnippets
+      );
 
-      const response = await request.snippets.get();
+      // Execute
+      const response = await testContext.api.snippets.get();
 
+      // Assert
       expect(response.status).toBe(200);
-      expect(response.data).toEqual([mockSnippet]);
+      expect(Array.isArray(response.data)).toBe(true);
+      expect(response.data).toHaveLength(1);
+      expect(response.data[0]).toMatchObject({
+        id: expect.any(String),
+        text: expect.any(String),
+        summary: expect.any(String),
+      });
+
+      // Verify database was queried correctly
+      expect(prisma.snippet.findMany).toHaveBeenCalled();
     });
   });
 
-  describe('GET /snippets/:id - Find a Snippet', () => {
-    it('returns a 404 not error status when wrong id is provided', async () => {
-      vi.mocked(prisma.snippet.findUnique).mockResolvedValue(null);
-      const { status } = await request.snippets({ id: 'incorrect-id' }).get();
+  describe('when it is a GET request to /snippets/:id', () => {
+    it('it should return a 404 error when an invalid ID is provided', async () => {
+      // Setup
+      (prisma.snippet.findUnique as Mock).mockResolvedValue(null);
 
-      expect(status).toBe(404);
+      // Execute & Assert
+      const response = await testContext.api
+        .snippets({ id: 'non-existent-id' })
+        .get();
+      expect(response.status).toBe(404);
     });
 
-    it('returns the found snippet', async () => {
-      vi.mocked(prisma.snippet.findUnique).mockResolvedValue(mockSnippet);
-      const response = await request.snippets({ id: mockSnippet.id }).get();
+    it('it should return the requested snippet when a valid ID is provided', async () => {
+      // Setup
+      (prisma.snippet.findUnique as Mock).mockResolvedValue(
+        testContext.mockSnippet
+      );
 
+      // Execute
+      const response = await testContext.api
+        .snippets({ id: MOCK_SNIPPET_ID })
+        .get();
+
+      // Assert
       expect(response.status).toBe(200);
-      expect(response.data).toEqual(mockSnippet);
+      expect(response.data).toEqual(testContext.mockSnippet);
     });
   });
 });
+// #endregion
