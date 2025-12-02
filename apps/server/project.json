@@ -10,6 +10,12 @@
         "eslintConfig": "apps/server/eslint.config.mjs"
       }
     },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun x tsc --project apps/server/tsconfig.app.json"
+      }
+    },
     "test": {
       "executor": "@nx/vite:test",
       "options": {
@@ -20,7 +26,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/server",
-        "command": "tsx watch src/main.ts"
+        "command": "bun --watch run src/main.ts"
       },
       "dependsOn": [
         {
@@ -60,14 +66,14 @@
     "prisma-generate": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx prisma generate --schema=src/prisma/schema.prisma",
+        "command": "bun --bun x prisma generate --schema=src/prisma/schema.prisma",
         "cwd": "apps/server"
       }
     },
     "prisma-seed": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsx src/prisma/seeds/seed.ts",
+        "command": "bun run src/prisma/seeds/seed.ts",
         "cwd": "apps/server"
       }
     }
