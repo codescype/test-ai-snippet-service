@@ -86,7 +86,7 @@ describe('Given the Snippets route group is requested', () => {
         .post({ text: '' })
         .catch((e: never) => e);
 
-      expect(response.status).toBe(422);
+      expect(response.status).toBe(400);
     });
 
     it('it should return a new snippet when the request body has a valid text', async () => {

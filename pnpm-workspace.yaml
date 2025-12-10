@@ -1,8 +1,0 @@
-packages:
-  - apps/*
-  - libs/*
-onlyBuiltDependencies:
-  - '@swc/core'
-  - cypress
-  - esbuild
-  - nx
