@@ -1,14 +1,12 @@
 import { Elysia } from 'elysia';
-import { node } from '@elysiajs/node';
 import { cors } from '@elysiajs/cors';
 import { swagger } from '@elysiajs/swagger';
 
 import { serverAppHostName } from '@ai-snippet-service/shared';
 import { snippetsRoutes } from './resources/snippets/snippets.routes';
 
-// Setup the Elysia server
+// Set up the Elysia server
 export const app = new Elysia({
-  adapter: node(),
   serve: {
     hostname: serverAppHostName,
   },

@@ -22,7 +22,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/client",
-        "command": "remix vite:dev --port=3030"
+        "command": "bun --bun x remix vite:dev --port=3030"
       },
       "continuous": true,
       "dependsOn": [
@@ -39,7 +39,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/client",
-        "command": "remix vite:build"
+        "command": "bun --bun x remix vite:build"
       },
       "dependsOn": [
         {
@@ -52,7 +52,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/client",
-        "command": "cross-env PORT=3030 remix-serve ./dist/server/index.js"
+        "command": "bun --bun x cross-env PORT=3030 remix-serve ./dist/server/index.js"
       },
       "continuous": true
     }

@@ -10,6 +10,12 @@
         "eslintConfig": "apps/client/eslint.config.mjs"
       }
     },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun --bun x tsc -p libs/shared/tsconfig.lib.json --noEmit"
+      }
+    },
     "test": {
       "executor": "@nx/vite:test",
       "options": {

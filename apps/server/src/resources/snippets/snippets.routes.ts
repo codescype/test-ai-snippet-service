@@ -30,7 +30,7 @@ export const snippetsRoutes = new Elysia()
             }),
             response: {
               200: SnippetSchema,
-              422: ErrorSchema,
+              400: ErrorSchema,
             },
           }
         )
