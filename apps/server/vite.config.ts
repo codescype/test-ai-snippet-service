@@ -19,6 +19,7 @@ export default defineConfig(() => ({
     target: 'node22',
 
     commonjsOptions: {
+      transformMixedEsModules: true,
     },
 
     rollupOptions: {
@@ -77,6 +78,8 @@ export default defineConfig(() => ({
         'helmet',
         'cookie-parser',
         'passport',
+
+        'generated/prisma/client',
 
         /^node:.*/, // Externalize node built-in modules (Node.js 16.0.0+ syntax)
       ],
