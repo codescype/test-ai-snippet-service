@@ -1,11 +1,4 @@
-import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeEach,
-  type Mock,
-} from 'vitest';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { treaty } from '@elysiajs/eden';
 
 import { app, type App } from '../../../src/app';
@@ -79,45 +72,49 @@ beforeEach(() => {
 
 // #region Test Suite
 // Define the test suite
-describe('Given the Snippets route group is requested', () => {
-  describe('when it is a POST request to /snippets', () => {
-    it('it should return a 422 error when the request body text is empty', async () => {
-      const response = await testContext.api.snippets
-        .post({ text: '' })
-        .catch((e: never) => e);
+describe('Given that a user makes a request to a route in the Snippets route group', () => {
+  describe('and it is a POST request to /snippets', () => {
+    describe('when the request body text is empty', () => {
+      it('it should return a 422 error', async () => {
+        const response = await testContext.api.snippets
+          .post({ text: '' })
+          .catch((e: never) => e);
 
-      expect(response.status).toBe(400);
+        expect(response.status).toBe(400);
+      });
     });
 
-    it('it should return a new snippet when the request body has a valid text', async () => {
-      // Setup mocks
-      (aiService.generateSummary as Mock).mockResolvedValue(MOCK_SUMMARY);
-      (prisma.snippet.create as Mock).mockResolvedValue(MOCK_SNIPPET);
+    describe('when the request body has a valid text', () => {
+      it('it should return a new snippet', async () => {
+        // Setup mocks
+        (aiService.generateSummary as Mock).mockResolvedValue(MOCK_SUMMARY);
+        (prisma.snippet.create as Mock).mockResolvedValue(MOCK_SNIPPET);
 
-      // Execute
-      const response = await testContext.api.snippets.post({
-        text: MOCK_SNIPPET_TEXT,
-      });
+        // Execute
+        const response = await testContext.api.snippets.post({
+          text: MOCK_SNIPPET_TEXT,
+        });
 
-      // Assert
-      expect(response.status).toBe(200);
-      expect(response.data).toEqual({
-        id: MOCK_SNIPPET_ID,
-        text: MOCK_SNIPPET_TEXT.trim(),
-        summary: MOCK_SUMMARY,
-      });
-
-      // Verify AI service was called with the correct text
-      expect(aiService.generateSummary).toHaveBeenCalledWith(
-        MOCK_SNIPPET_TEXT.trim()
-      );
-
-      // Verify database was called with correct data
-      expect(prisma.snippet.create).toHaveBeenCalledWith({
-        data: {
+        // Assert
+        expect(response.status).toBe(200);
+        expect(response.data).toEqual({
+          id: MOCK_SNIPPET_ID,
           text: MOCK_SNIPPET_TEXT.trim(),
           summary: MOCK_SUMMARY,
-        },
+        });
+
+        // Verify AI service was called with the correct text
+        expect(aiService.generateSummary).toHaveBeenCalledWith(
+          MOCK_SNIPPET_TEXT.trim()
+        );
+
+        // Verify database was called with correct data
+        expect(prisma.snippet.create).toHaveBeenCalledWith({
+          data: {
+            text: MOCK_SNIPPET_TEXT.trim(),
+            summary: MOCK_SUMMARY,
+          },
+        });
       });
     });
   });
@@ -147,32 +144,36 @@ describe('Given the Snippets route group is requested', () => {
     });
   });
 
-  describe('when it is a GET request to /snippets/:id', () => {
-    it('it should return a 404 error when an invalid ID is provided', async () => {
-      // Setup
-      (prisma.snippet.findUnique as Mock).mockResolvedValue(null);
+  describe('and it is a GET request to /snippets/:id', () => {
+    describe('when an invalid ID is provided', () => {
+      it('it should return a 404 error', async () => {
+        // Setup
+        (prisma.snippet.findUnique as Mock).mockResolvedValue(null);
 
-      // Execute & Assert
-      const response = await testContext.api
-        .snippets({ id: 'non-existent-id' })
-        .get();
-      expect(response.status).toBe(404);
+        // Execute & Assert
+        const response = await testContext.api
+          .snippets({ id: 'non-existent-id' })
+          .get();
+        expect(response.status).toBe(404);
+      });
     });
 
-    it('it should return the requested snippet when a valid ID is provided', async () => {
-      // Setup
-      (prisma.snippet.findUnique as Mock).mockResolvedValue(
-        testContext.mockSnippet
-      );
+    describe('when a valid ID is provided', () => {
+      it('it should return the requested snippet', async () => {
+        // Setup
+        (prisma.snippet.findUnique as Mock).mockResolvedValue(
+          testContext.mockSnippet
+        );
 
-      // Execute
-      const response = await testContext.api
-        .snippets({ id: MOCK_SNIPPET_ID })
-        .get();
+        // Execute
+        const response = await testContext.api
+          .snippets({ id: MOCK_SNIPPET_ID })
+          .get();
 
-      // Assert
-      expect(response.status).toBe(200);
-      expect(response.data).toEqual(testContext.mockSnippet);
+        // Assert
+        expect(response.status).toBe(200);
+        expect(response.data).toEqual(testContext.mockSnippet);
+      });
     });
   });
 });
