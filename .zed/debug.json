@@ -1,0 +1,46 @@
+[
+  {
+    "adapter": "JavaScript",
+    "label": "Debug Client",
+    "type": "node",
+    "request": "launch",
+    "runtimeExecutable": "bun",
+    "args": ["nx", "run", "client:dev"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "skipFiles": ["<node_internals>/**"],
+    "env": {
+      "NODE_ENV": "development"
+    }
+  },
+  {
+    "adapter": "JavaScript",
+    "label": "Debug Server",
+    "type": "node",
+    "request": "launch",
+    "runtimeExecutable": "bun",
+    "args": ["nx", "run", "server:dev"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "skipFiles": ["<node_internals>/**"],
+    "env": {
+      "NODE_ENV": "development"
+    }
+  },
+  {
+    "adapter": "JavaScript",
+    "label": "Attach to Client",
+    "type": "node",
+    "request": "attach",
+    "port": 9230,
+    "cwd": "${ZED_WORKTREE_ROOT}/apps/client",
+    "skipFiles": ["<node_internals>/**"]
+  },
+  {
+    "adapter": "JavaScript",
+    "label": "Attach to Server",
+    "type": "node",
+    "request": "attach",
+    "port": 9229,
+    "cwd": "${ZED_WORKTREE_ROOT}/apps/server",
+    "skipFiles": ["<node_internals>/**"]
+  }
+]
