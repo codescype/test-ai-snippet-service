@@ -45,7 +45,7 @@ vi.mock('../../../src/prisma/prisma', () => ({
   } as unknown as PrismaClient,
 }));
 
-// Setup hooks to run before each test
+// Set up hooks to run before each test
 beforeEach(() => {
   // Reset all mocks
   vi.clearAllMocks();
@@ -57,15 +57,18 @@ beforeEach(() => {
     mockSnippets: [{ ...MOCK_SNIPPET }],
   };
 
-  // Setup default mock implementations
+  /* Set up default mock implementations */
+
+  // Set up prisma mock implementations
   (prisma.snippet.findUnique as Mock).mockImplementation(({ where }) =>
     where.id === MOCK_SNIPPET_ID
       ? Promise.resolve(testContext.mockSnippet)
       : Promise.resolve(null)
   );
-
   (prisma.snippet.findMany as Mock).mockResolvedValue(testContext.mockSnippets);
   (prisma.snippet.create as Mock).mockResolvedValue(testContext.mockSnippet);
+
+  // Set up AI service mock implementations
   (aiService.generateSummary as Mock).mockResolvedValue(MOCK_SUMMARY);
 });
 // #endregion
@@ -80,7 +83,7 @@ describe('Given that a user makes a request to a route in the Snippets route gro
           .post({ text: '' })
           .catch((e: never) => e);
 
-        expect(response.status).toBe(400);
+        expect(response.status).toBe(422);
       });
     });
 
@@ -150,10 +153,12 @@ describe('Given that a user makes a request to a route in the Snippets route gro
         // Setup
         (prisma.snippet.findUnique as Mock).mockResolvedValue(null);
 
-        // Execute & Assert
+        // Execute
         const response = await testContext.api
-          .snippets({ id: 'non-existent-id' })
+          .snippets({ id: 'invalid-id' })
           .get();
+
+        // Assert
         expect(response.status).toBe(404);
       });
     });
