@@ -60,13 +60,13 @@ beforeEach(() => {
   /* Set up default mock implementations */
 
   // Set up prisma mock implementations
+  (prisma.snippet.create as Mock).mockResolvedValue(testContext.mockSnippet);
+  (prisma.snippet.findMany as Mock).mockResolvedValue(testContext.mockSnippets);
   (prisma.snippet.findUnique as Mock).mockImplementation(({ where }) =>
     where.id === MOCK_SNIPPET_ID
       ? Promise.resolve(testContext.mockSnippet)
       : Promise.resolve(null)
   );
-  (prisma.snippet.findMany as Mock).mockResolvedValue(testContext.mockSnippets);
-  (prisma.snippet.create as Mock).mockResolvedValue(testContext.mockSnippet);
 
   // Set up AI service mock implementations
   (aiService.generateSummary as Mock).mockResolvedValue(MOCK_SUMMARY);
